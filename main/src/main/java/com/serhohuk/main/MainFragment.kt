@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import com.serhohuk.core.BaseFragment
 import com.serhohuk.core.LoginUtils
 import com.serhohuk.main.databinding.FragmentMainBinding
+import kotlinx.coroutines.flow.collectLatest
+import org.koin.android.ext.android.inject
 
 
 /**
@@ -17,6 +20,8 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
 
     private var _binding : FragmentMainBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel by inject<MainViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,24 +35,32 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        loginState()
+        //loginState()
+        viewModel.eventObserve()
 
         binding.btnLogin.setOnClickListener {
             router.navigateToAuth(parentFragmentManager)
         }
 
         binding.btnToProfile.setOnClickListener {
-            router.navigateToProfile(parentFragmentManager)
+            //router.navigateToProfile(parentFragmentManager)
         }
+
+        lifecycleScope.launchWhenCreated {
+            viewModel.timeLogin.collectLatest {
+                loginState(it)
+            }
+        }
+
     }
 
-    fun loginState(){
-        if (loginPrefManager.email.isNotEmpty()){
+    private fun loginState(str : String){
+        if (str.isNotEmpty()){
             binding.btnLogin.isEnabled = false
             binding.btnLogin.isClickable = false
             binding.btnToProfile.isEnabled = true
             binding.btnToProfile.isClickable = true
-            val loginTime = LoginUtils.timeInMillisToTimeString(loginPrefManager.loginTime)
+            val loginTime = LoginUtils.timeInMillisToTimeString(str)
             binding.tvLoggedIn.text = getString(com.serhohuk.core.R.string.logged_in,loginTime)
         } else {
             binding.tvLoggedIn.visibility = View.GONE

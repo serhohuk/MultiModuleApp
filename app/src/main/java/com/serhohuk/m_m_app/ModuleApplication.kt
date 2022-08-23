@@ -7,6 +7,8 @@ import com.serhohuk.auth.AuthFragment
 import com.serhohuk.core.Router
 import com.serhohuk.main.MainFragment
 import com.serhohuk.profile.ProfileFragment
+import org.koin.core.context.startKoin
+import java.util.logging.Logger
 
 /**
  * Created by serhh on 23.08.2022
@@ -23,12 +25,17 @@ class ModuleApplication : Application(), Router {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        startKoin{
+            modules(module)
+        }
     }
 
 
     override fun navigateToAuth(fm: FragmentManager) {
         fm.beginTransaction()
-            .replace(R.id.fragment, AuthFragment()).commit()
+            .replace(R.id.fragment, AuthFragment())
+            .addToBackStack("auth")
+            .commit()
     }
 
     override fun navigateToMain(fm: FragmentManager) {
