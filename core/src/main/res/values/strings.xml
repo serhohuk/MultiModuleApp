@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="navigate_to_profile">Navigate to Profile</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="email_param">Email: %1$s</string>
+    <string name="logout">Logout</string>
+    <string name="logged_in">Logged in: %1$s</string>
+    <string name="login_in_profile">Login into profile</string>
+</resources>
