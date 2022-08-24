@@ -46,7 +46,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
             //router.navigateToProfile(parentFragmentManager)
         }
 
-        lifecycleScope.launchWhenCreated {
+        lifecycleScope.launchWhenStarted {
             viewModel.timeLogin.collectLatest {
                 loginState(it)
             }

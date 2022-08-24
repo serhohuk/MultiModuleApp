@@ -2,6 +2,7 @@ package com.serhohuk.core
 
 
 import android.text.format.DateFormat
+import java.text.SimpleDateFormat
 import java.util.regex.Pattern
 
 /**
@@ -31,6 +32,8 @@ object LoginUtils {
     }
 
     private fun convertDate(dateInMilliseconds: String): String {
-        return DateFormat.format("dd/MM/yyyy HH:MM", dateInMilliseconds.toLong()).toString()
+        val time = dateInMilliseconds.toLong()
+        return SimpleDateFormat("d MMM yyyy HH:mm:ss").format(time)
+
     }
 }
