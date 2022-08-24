@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.serhohuk.core.BaseFragment
 import com.serhohuk.core.LoginUtils
+import com.serhohuk.core.viewBinding
 import com.serhohuk.main.databinding.FragmentMainBinding
 import kotlinx.coroutines.flow.collectLatest
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 /**
@@ -18,18 +19,23 @@ import org.koin.android.ext.android.inject
 
 class MainFragment : BaseFragment(R.layout.fragment_main) {
 
-    private var _binding : FragmentMainBinding? = null
-    private val binding get() = _binding!!
+//    private var _binding : FragmentMainBinding? = null
+//    private val binding get() = _binding!!
+    private val binding by viewBinding(FragmentMainBinding::bind)
 
-    private val viewModel by inject<MainViewModel>()
+    private val viewModel by viewModel<MainViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding!!.root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        lifecycle.addObserver(viewModel)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,10 +75,5 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
             binding.btnLogin.isEnabled = true
             binding.btnLogin.isClickable = true
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

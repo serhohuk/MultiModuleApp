@@ -1,6 +1,8 @@
 package com.serhohuk.main
 
+import android.util.Log
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.viewModelScope
 import com.serhohuk.core.BaseViewModel
@@ -18,6 +20,17 @@ class MainViewModel : BaseViewModel() {
 
     private val stateFlow = MutableStateFlow("")
     val timeLogin = stateFlow.asStateFlow()
+
+    override fun onCreate(owner: LifecycleOwner) {
+        super.onCreate(owner)
+        Log.d(MainViewModel::class.java.simpleName, "onCreate")
+        eventObserve()
+    }
+
+    override fun onResume(owner: LifecycleOwner) {
+        super.onResume(owner)
+        Log.d(MainViewModel::class.java.simpleName, "onResume")
+    }
 
 
     fun eventObserve(){
