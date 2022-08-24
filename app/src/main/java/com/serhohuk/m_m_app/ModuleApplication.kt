@@ -28,6 +28,7 @@ class ModuleApplication : Application(), Router {
 
     override fun navigateToAuth(fm: FragmentManager) {
         fm.beginTransaction()
+            .addToBackStack(AuthFragment::class.java.simpleName)
             .replace(R.id.fragment, AuthFragment()).commit()
     }
 
